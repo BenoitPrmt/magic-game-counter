@@ -9,7 +9,7 @@ export type Game = Snapshot & { id: string; initialLife: number; history: Entry[
 export type Action = { type: 'life'; id: string; delta: number } | { type: 'rotate'; id: string } | { type: 'protect'; id: string } | { type: 'concede'; id: string } | { type: 'automatic'; value: boolean } | { type: 'finish'; winner: string | null } | { type: 'resume' } | { type: 'undo' };
 export const DEFAULT_SETUP: Setup = { count: 2, names: ['', '', '', '', '', ''], colors: [0,1,2,3,4,0], life: 20, custom: false };
 export function createGame(setup: Setup, now = Date.now()): Game {
-  return { id: String(now), initialLife: setup.life, createdAt: now, automatic: true, result: null, history: [], players: Array.from({length:setup.count}, (_,i) => ({ id: String(i), name: setup.names[i]?.trim() || `Joueur ${i+1}`, color: COLORS[setup.colors[i]], life: setup.life, rotation: i < Math.ceil(setup.count/2) ? 180 : 0, conceded: false, protected: false })) };
+  return { id: String(now), initialLife: setup.life, createdAt: now, automatic: true, result: null, history: [], players: Array.from({length:setup.count}, (_,i) => ({ id: String(i), name: setup.names[i]?.trim() || `Joueur ${i+1}`, color: COLORS[setup.colors[i]], life: setup.life, rotation: (setup.count <= 3 ? i === 0 : i < 2) ? 180 : 0, conceded: false, protected: false })) };
 }
 export function eliminated(game: Snapshot, player: Player) { return player.conceded || (game.automatic && player.life <= 0 && !player.protected); }
 export function outcome(game: Snapshot): Result | null {

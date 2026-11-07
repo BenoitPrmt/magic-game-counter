@@ -1,23 +1,37 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { GameBoard } from './game-board';
+import { readStored, saveStored } from '@/lib/storage';
 import { createGame, reduceGame, rematch, type Game } from '@/lib/game';
 import { Flame, Moon, Sun, ArrowRight, Minus, Plus, Users, Check } from 'lucide-react';
 export const colors = ['blue', 'red', 'green', 'ivory', 'black'] as const;
 export const colorNames = ['Bleu', 'Rouge', 'Vert', 'Ivoire', 'Charbon'];
+const subscribe = () => () => {};
 export function CounterApp() {
-  const [count, setCount] = useState(2);
-  const [names, setNames] = useState(Array<string>(6).fill(''));
-  const [life, setLife] = useState(20);
-  const [custom, setCustom] = useState(false);
-  const [dark, setDark] = useState(false);
-  const [playerColors, setPlayerColors] = useState([0, 1, 2, 3, 4, 0]);
-  const [game, setGame] = useState<Game | null>(null);
+  const ready=useSyncExternalStore(subscribe,()=>true,()=>false);
+  return ready ? <ReadyApp/> : <main className="app loading" aria-label="Chargement de votre table"><Flame size={32}/></main>;
+}
+function ReadyApp() {
+  const [stored] = useState(readStored);
+  const [storageError,setStorageError]=useState(stored.error);
+  const [count, setCount] = useState(stored.data.setup.count);
+  const [names, setNames] = useState(stored.data.setup.names);
+  const [life, setLife] = useState(stored.data.setup.life);
+  const [custom, setCustom] = useState(stored.data.setup.custom);
+  const [dark, setDark] = useState(stored.data.dark);
+  const [playerColors, setPlayerColors] = useState(stored.data.setup.colors);
+  const [game, setGame] = useState<Game | null>(stored.data.game);
+  useEffect(()=>{
+    const ok=saveStored({version:1,setup:{count,names,colors:playerColors,life:Number.isInteger(life)&&life>=1&&life<=9999?life:20,custom},game,dark});
+    if(!ok) queueMicrotask(()=>setStorageError(true));
+    document.documentElement.style.colorScheme=dark?'dark':'light';
+  },[count,names,playerColors,life,custom,game,dark]);
+  const notice=storageError ? <div className="storage-notice" role="alert">La sauvegarde locale est indisponible ou a été réinitialisée. Gardez cet écran ouvert.<button aria-label="Masquer l’avertissement" onClick={()=>setStorageError(false)}>×</button></div> : null;
   const appClass = dark ? 'app dark' : 'app';
-  if (game) return <main className={`${appClass} playing`}><GameBoard game={game} dispatch={a=>setGame(g=>g ? reduceGame(g,a) : g)} onNew={()=>setGame(null)} onRematch={()=>setGame(rematch(game))}/></main>;
+  if (game) return <main className={`${appClass} playing`}>{notice}<GameBoard game={game} dispatch={a=>setGame(g=>g ? reduceGame(g,a) : g)} onNew={()=>setGame(null)} onRematch={()=>setGame(rematch(game))}/></main>;
   return <main className={dark ? 'app dark' : 'app'}>
-    <header className="site-header"><Link className="brand" href="/" aria-label="Compagnon, accueil"><span className="brand-icon"><Flame size={22} /></span>compagnon<span className="brand-dot">.</span></Link><button className="icon-button" aria-label={dark ? 'Activer le thème clair' : 'Activer le thème sombre'} onClick={() => setDark(!dark)}>{dark ? <Sun size={19} /> : <Moon size={19} />}</button></header>
+    {notice}<header className="site-header"><Link className="brand" href="/" aria-label="Compagnon, accueil"><span className="brand-icon"><Flame size={22} /></span>compagnon<span className="brand-dot">.</span></Link><button className="icon-button" aria-label={dark ? 'Activer le thème clair' : 'Activer le thème sombre'} onClick={() => setDark(!dark)}>{dark ? <Sun size={19} /> : <Moon size={19} />}</button></header>
     <section className="setup-shell"><div className="intro"><h1>La partie commence ici.</h1><p>Posez le téléphone. Sortez les cartes.<br />On s’occupe des points de vie.</p></div>
       <form className="setup-card" onSubmit={e => { e.preventDefault(); if(life>=1 && life<=9999 && Number.isInteger(life))setGame(createGame({count,names,colors:playerColors,life,custom})); }}>
         <div className="form-section"><div className="section-line"><h2>Autour de la table</h2><span className="muted"><Users size={15} /> {count} joueurs</span></div><div className="segmented player-count">{[2,3,4,5,6].map(n => <button type="button" aria-pressed={count === n} className={count === n ? 'selected' : ''} key={n} onClick={() => setCount(n)}>{n}</button>)}</div></div>
