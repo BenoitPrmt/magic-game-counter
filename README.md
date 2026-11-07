@@ -16,6 +16,7 @@ pnpm typecheck
 pnpm lint
 pnpm test
 pnpm build
+pnpm test:pwa # vérifie le service worker généré
 ```
 
 Application Next.js exportée en site statique dans `out/`. Aucun compte ni backend.
@@ -48,3 +49,5 @@ Déployer **le contenu de `out/` à la racine d’un hébergement HTTPS**. Les s
 Le mode hors ligne est prêt lorsque « Disponible hors ligne » apparaît après le premier chargement complet. Le service worker n’est pas activé en développement (`pnpm dev`). L’installation utilise l’invite native quand elle existe ; les autres navigateurs affichent les instructions, notamment Safari iOS.
 
 L’application suit les vies et les abandons, pas les effets des cartes. Poison et dégâts de commandant ne sont pas inclus dans cette première version. Les règles d’élimination peuvent être contournées manuellement depuis le menu.
+
+Les vérifications effectuées et leurs limites sont consignées dans [docs/verification.md](docs/verification.md). La police Outfit, reprise du site de référence, est embarquée localement sous licence SIL OFL dans `public/fonts/`.

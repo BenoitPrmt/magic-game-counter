@@ -121,7 +121,6 @@ export function reduceGame(game: Game, action: Action, now = Date.now()): Game {
         : `Victoire de ${next.players.find((p) => p.id === action.winner)?.name}`;
   } else if (action.type === "resume") {
     next.result = null;
-    // A manual win must not turn into an automatic win immediately on resume.
     label = "Partie reprise pour correction";
   }
   return {

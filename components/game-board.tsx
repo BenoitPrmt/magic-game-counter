@@ -24,11 +24,15 @@ export function GameBoard({
   dispatch,
   onNew,
   onRematch,
+  dark,
+  onThemeChange,
 }: {
   game: Game;
   dispatch: (a: Action) => void;
   onNew: () => void;
   onRematch: () => void;
+  dark: boolean;
+  onThemeChange: () => void;
 }) {
   const [keepAwake, setKeepAwake] = useState(true);
   const wakeStatus = useWakeLock(keepAwake);
@@ -57,7 +61,7 @@ export function GameBoard({
             key={player.id}
             player={player}
             out={eliminated(game, player)}
-            locked={!!game.result}
+            locked={!!game.result || !!panel || showResult}
             dispatch={dispatch}
           />
         ))}
@@ -218,6 +222,17 @@ export function GameBoard({
                   onChange={(e) => setKeepAwake(e.target.checked)}
                 />
               </label>
+              <label className="toggle-row">
+                <span>
+                  Thème sombre
+                  <small>Une ambiance plus douce autour de la table.</small>
+                </span>
+                <input
+                  type="checkbox"
+                  checked={dark}
+                  onChange={onThemeChange}
+                />
+              </label>
               <div className="player-settings">
                 {game.players.map((p) => (
                   <div className="player-setting" key={p.id}>
@@ -345,7 +360,17 @@ function PlayerZone({
   dispatch: (a: Action) => void;
 }) {
   const [change, setChange] = useState(0);
+  const previousLife = useRef(player.life);
   const reset = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    const delta = player.life - previousLife.current;
+    previousLife.current = player.life;
+    if (!delta) return;
+    const update = setTimeout(() => setChange((current) => current + delta), 0);
+    if (reset.current) clearTimeout(reset.current);
+    reset.current = setTimeout(() => setChange(0), 1500);
+    return () => clearTimeout(update);
+  }, [player.life]);
   useEffect(
     () => () => {
       if (reset.current) clearTimeout(reset.current);
@@ -354,9 +379,6 @@ function PlayerZone({
   );
   function step(delta: number) {
     dispatch({ type: "life", id: player.id, delta });
-    setChange((c) => c + delta);
-    if (reset.current) clearTimeout(reset.current);
-    reset.current = setTimeout(() => setChange(0), 1500);
   }
   const sideways = player.rotation % 180 !== 0;
   return (
@@ -390,10 +412,10 @@ function PlayerZone({
           >
             <Minus />
           </HoldButton>
-          <div className="life-total">
+          <div className="life-total" aria-live="polite" aria-atomic="true">
             <span
               className="life-number"
-              aria-label={`${player.life} points de vie`}
+              aria-label={`${player.life} point${Math.abs(player.life) === 1 ? "" : "s"} de vie`}
             >
               {player.life}
             </span>

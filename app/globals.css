@@ -1,6 +1,6 @@
 @import "tailwindcss";
 :root {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-outfit), sans-serif;
   color-scheme: light;
 }
 * {
@@ -1211,5 +1211,63 @@ h2 {
   }
   .board:not(.board-2) .life-controls {
     gap: 12px;
+  }
+}
+/* Keep color choices usable on narrow phones. */
+.color-dot {
+  width: 24px;
+  height: 24px;
+}
+@media (max-width: 380px) {
+  .player-field {
+    flex-wrap: wrap;
+  }
+  .name-input {
+    min-width: 120px;
+  }
+  .color-picker {
+    margin-left: 44px;
+    gap: 10px;
+  }
+  .color-dot {
+    width: 28px;
+    height: 28px;
+  }
+}
+/* A rotated zone swaps its own dimensions, independently of the device. */
+.player-zone {
+  container-type: size;
+}
+.zone-content {
+  width: 100cqw;
+  height: 100cqh;
+}
+.zone-content.sideways,
+.board:not(.board-2) .zone-content.sideways {
+  width: 100cqh;
+  height: 100cqw;
+}
+.zone-content.sideways .life-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  justify-items: center;
+  max-width: 100%;
+}
+.zone-content.sideways .life-total {
+  grid-column: 1/-1;
+  grid-row: 1;
+}
+.board:not(.board-2) .zone-content.sideways .life-total {
+  font-size: clamp(30px, 22cqmin, 90px);
+}
+@media (orientation: landscape) {
+  .board-2 .zone-content {
+    width: 100cqh;
+    height: 100cqw;
+  }
+  .board-2 .zone-content.sideways {
+    width: 100cqw;
+    height: 100cqh;
   }
 }

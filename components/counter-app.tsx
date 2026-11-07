@@ -4,7 +4,13 @@ import Link from "next/link";
 import { GameBoard } from "./game-board";
 import { PwaControls } from "./pwa-controls";
 import { readStored, saveStored } from "@/lib/storage";
-import { createGame, reduceGame, rematch, type Game } from "@/lib/game";
+import {
+  createGame,
+  reduceGame,
+  rematch,
+  COLORS as colors,
+  type Game,
+} from "@/lib/game";
 import {
   Flame,
   Moon,
@@ -15,7 +21,6 @@ import {
   Users,
   Check,
 } from "lucide-react";
-export const colors = ["blue", "red", "green", "ivory", "black"] as const;
 export const colorNames = ["Bleu", "Rouge", "Vert", "Ivoire", "Charbon"];
 const subscribe = () => () => {};
 export function CounterApp() {
@@ -57,6 +62,9 @@ function ReadyApp() {
     });
     if (!ok) queueMicrotask(() => setStorageError(true));
     document.documentElement.style.colorScheme = dark ? "dark" : "light";
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", dark ? "#191b18" : "#f3f2ee");
   }, [count, names, playerColors, life, custom, game, dark]);
   const notice = storageError ? (
     <div className="storage-notice" role="alert">
@@ -78,6 +86,9 @@ function ReadyApp() {
         <>
           {notice}
           <GameBoard
+            key={game.id}
+            dark={dark}
+            onThemeChange={() => setDark((value) => !value)}
             game={game}
             dispatch={(a) => setGame((g) => (g ? reduceGame(g, a) : g))}
             onNew={() => setGame(null)}
@@ -213,6 +224,7 @@ function ReadyApp() {
                   {[20, 40].map((n) => (
                     <button
                       type="button"
+                      aria-pressed={!custom && life === n}
                       className={`life-option ${!custom && life === n ? "selected" : ""}`}
                       key={n}
                       onClick={() => {
@@ -226,6 +238,7 @@ function ReadyApp() {
                   ))}
                   <button
                     type="button"
+                    aria-pressed={custom}
                     className={`life-option ${custom ? "selected" : ""}`}
                     onClick={() => setCustom(true)}
                   >

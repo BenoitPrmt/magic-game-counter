@@ -30,6 +30,9 @@ export function HoldButton({
       document.removeEventListener("visibilitychange", cancel);
     };
   }, []);
+  useEffect(() => {
+    if (disabled) stop();
+  }, [disabled]);
   return (
     <button
       type="button"
