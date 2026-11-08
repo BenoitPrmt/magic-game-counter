@@ -58,7 +58,7 @@ export function createGame(setup: Setup, now = Date.now()): Game {
       name: setup.names[i]?.trim() || `Joueur ${i + 1}`,
       color: COLORS[setup.colors[i]],
       life: setup.life,
-      rotation: (setup.count <= 3 ? i === 0 : i < 2) ? 180 : 0,
+      rotation: setup.count === 2 && i === 0 ? 180 : 0,
       conceded: false,
       protected: false,
     })),

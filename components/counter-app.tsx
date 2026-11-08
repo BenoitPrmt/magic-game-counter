@@ -15,7 +15,8 @@ import {
   Flame,
   Moon,
   Sun,
-  ArrowRight,
+  Play,
+  X,
   Minus,
   Plus,
   Users,
@@ -64,7 +65,7 @@ function ReadyApp() {
     document.documentElement.style.colorScheme = dark ? "dark" : "light";
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", dark ? "#191b18" : "#f3f2ee");
+      ?.setAttribute("content", dark ? "#100e1a" : "#f3f0f8");
   }, [count, names, playerColors, life, custom, game, dark]);
   const notice = storageError ? (
     <div className="storage-notice" role="alert">
@@ -103,7 +104,10 @@ function ReadyApp() {
               <span className="brand-icon">
                 <Flame size={22} />
               </span>
-              compagnon<span className="brand-dot">.</span>
+              <span className="brand-copy">
+                <strong>Compteur de vies</strong>
+                <span>Compagnon pour Magic</span>
+              </span>
             </Link>
             <button
               className="icon-button"
@@ -116,14 +120,6 @@ function ReadyApp() {
             </button>
           </header>
           <section className="setup-shell">
-            <div className="intro">
-              <h1>La partie commence ici.</h1>
-              <p>
-                Posez le téléphone. Sortez les cartes.
-                <br />
-                On s’occupe des points de vie.
-              </p>
-            </div>
             <form
               className="setup-card"
               onSubmit={(e) => {
@@ -140,9 +136,13 @@ function ReadyApp() {
                   );
               }}
             >
+              <div className="setup-card-heading">
+                <Users size={22} />
+                <h1>Nouvelle partie</h1>
+              </div>
               <div className="form-section">
                 <div className="section-line">
-                  <h2>Autour de la table</h2>
+                  <h2>Nombre de joueurs</h2>
                   <span className="muted">
                     <Users size={15} /> {count} joueurs
                   </span>
@@ -161,12 +161,19 @@ function ReadyApp() {
                   ))}
                 </div>
               </div>
+              <h2 className="players-label">Noms des joueurs</h2>
               <div className="player-fields">
                 {Array.from({ length: count }, (_, i) => (
                   <div className="player-field" key={i}>
-                    <span className={`player-orb ${colors[playerColors[i]]}`}>
-                      {i + 1}
-                    </span>
+                    <ColorPicker
+                      index={i}
+                      value={playerColors[i]}
+                      onChange={(value) =>
+                        setPlayerColors((values) =>
+                          values.map((c, j) => (j === i ? value : c)),
+                        )
+                      }
+                    />
                     <div className="name-input">
                       <label htmlFor={`name-${i}`}>Joueur {i + 1}</label>
                       <input
@@ -190,28 +197,19 @@ function ReadyApp() {
                         }
                       />
                     </div>
-                    <div
-                      className="color-picker"
-                      role="group"
-                      aria-label={`Couleur du joueur ${i + 1}`}
+                    <button
+                      type="button"
+                      className="clear-name"
+                      aria-label={`Effacer le nom du joueur ${i + 1}`}
+                      disabled={!names[i]}
+                      onClick={() =>
+                        setNames((values) =>
+                          values.map((n, j) => (j === i ? "" : n)),
+                        )
+                      }
                     >
-                      {colors.map((c, j) => (
-                        <button
-                          type="button"
-                          key={c}
-                          className={`color-dot ${c}`}
-                          aria-label={colorNames[j]}
-                          aria-pressed={playerColors[i] === j}
-                          onClick={() =>
-                            setPlayerColors(
-                              playerColors.map((v, k) => (k === i ? j : v)),
-                            )
-                          }
-                        >
-                          {playerColors[i] === j && <Check size={12} />}
-                        </button>
-                      ))}
-                    </div>
+                      <X size={16} />
+                    </button>
                   </div>
                 ))}
               </div>
@@ -265,7 +263,7 @@ function ReadyApp() {
                 )}
               </div>
               <button className="primary start-button" type="submit">
-                Commencer la partie <ArrowRight size={19} />
+                <Play size={18} fill="currentColor" /> Démarrer la partie
               </button>
               <p className="form-note">Un seul écran. Toute la table.</p>
             </form>
@@ -281,5 +279,44 @@ function ReadyApp() {
         </>
       )}
     </main>
+  );
+}
+
+function ColorPicker({
+  index,
+  value,
+  onChange,
+}: {
+  index: number;
+  value: number;
+  onChange: (value: number) => void;
+}) {
+  return (
+    <details className="color-menu">
+      <summary aria-label={`Changer la couleur du joueur ${index + 1}`}>
+        <span className={`player-orb ${colors[value]}`} />
+      </summary>
+      <div
+        className="color-picker"
+        role="group"
+        aria-label={`Couleur du joueur ${index + 1}`}
+      >
+        {colors.map((color, j) => (
+          <button
+            type="button"
+            key={color}
+            className={`color-dot ${color}`}
+            aria-label={colorNames[j]}
+            aria-pressed={value === j}
+            onClick={(event) => {
+              onChange(j);
+              event.currentTarget.closest("details")?.removeAttribute("open");
+            }}
+          >
+            {value === j && <Check size={13} />}
+          </button>
+        ))}
+      </div>
+    </details>
   );
 }

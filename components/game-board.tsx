@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Flame,
-  Menu,
+  MoreVertical,
   Minus,
   Plus,
   RotateCw,
@@ -36,7 +36,7 @@ export function GameBoard({
 }) {
   const [keepAwake, setKeepAwake] = useState(true);
   const wakeStatus = useWakeLock(keepAwake);
-  const [panel, setPanel] = useState<"menu" | "history" | null>(null);
+  const [panel, setPanel] = useState<"menu" | "history" | "leave" | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [confirm, setConfirm] = useState<"new" | "rematch" | null>(null);
   const result = outcome(game);
@@ -51,7 +51,40 @@ export function GameBoard({
     if (game.result) dispatch({ type: "resume" });
   }
   return (
-    <div className="game-screen">
+    <div
+      className={`game-screen ${game.players.length === 2 ? "duel-screen" : "multiplayer-screen"}`}
+    >
+      <header className="game-header">
+        <button
+          className="back-button"
+          aria-label="Revenir à la création"
+          onClick={() => setPanel("leave")}
+        >
+          <ArrowLeft size={22} />
+        </button>
+        <div>
+          <h1>Partie en cours</h1>
+          <p>{game.players.length} joueurs · Magic</p>
+        </div>
+        <nav className="game-toolbar" aria-label="Actions de la partie">
+          <button
+            aria-label="Annuler la dernière action"
+            disabled={!game.history.length}
+            onClick={() => dispatch({ type: "undo" })}
+          >
+            <Undo2 size={19} />
+          </button>
+          <button
+            aria-label="Ouvrir le menu de la partie"
+            onClick={() => {
+              setPanel("menu");
+              setConfirm(null);
+            }}
+          >
+            <MoreVertical size={22} />
+          </button>
+        </nav>
+      </header>
       <div
         className={`board board-${game.players.length}`}
         aria-label="Plateau de jeu"
@@ -65,29 +98,17 @@ export function GameBoard({
             dispatch={dispatch}
           />
         ))}
+        {game.players.length === 2 && (
+          <span className="duel-seal" aria-hidden="true">
+            <Flame size={24} />
+          </span>
+        )}
       </div>
-      <nav className="game-toolbar" aria-label="Actions de la partie">
-        <span className="toolbar-brand">
-          <Flame size={18} />
-        </span>
-        <button
-          aria-label="Annuler la dernière action"
-          disabled={!game.history.length}
-          onClick={() => dispatch({ type: "undo" })}
-        >
-          <Undo2 size={19} />
+      <footer className="game-footer">
+        <button onClick={() => setPanel("history")}>
+          <History size={17} /> Historique
         </button>
-        <span className="toolbar-divider" />
-        <button
-          aria-label="Ouvrir le menu de la partie"
-          onClick={() => {
-            setPanel("menu");
-            setConfirm(null);
-          }}
-        >
-          <Menu size={21} />
-        </button>
-      </nav>
+      </footer>
       {detected && !game.result && (
         <div className="outcome-banner" role="status">
           <Trophy size={17} />
@@ -146,7 +167,11 @@ export function GameBoard({
         >
           <div className="dialog-header">
             <h2 id="menu-title">
-              {panel === "history" ? "Historique de la partie" : "Votre partie"}
+              {panel === "history"
+                ? "Historique de la partie"
+                : panel === "leave"
+                  ? "Revenir à la création ?"
+                  : "Votre partie"}
             </h2>
             <button
               className="icon-button"
@@ -156,7 +181,22 @@ export function GameBoard({
               <X size={18} />
             </button>
           </div>
-          {panel === "history" ? (
+          {panel === "leave" ? (
+            <>
+              <p className="install-copy">
+                La partie en cours sera remplacée. Vous pourrez préparer une
+                nouvelle table avec les mêmes noms.
+              </p>
+              <div className="menu-bottom">
+                <button className="secondary" onClick={() => setPanel(null)}>
+                  Continuer à jouer
+                </button>
+                <button className="primary" onClick={onNew}>
+                  Nouvelle partie
+                </button>
+              </div>
+            </>
+          ) : panel === "history" ? (
             <>
               <button className="text-button" onClick={() => setPanel("menu")}>
                 <ArrowLeft size={16} /> Retour aux réglages

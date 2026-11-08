@@ -27,3 +27,13 @@ Vérifications effectuées le 7 novembre 2026.
 ## Limites de la vérification
 
 Les tailles mobiles ont été vérifiées dans un navigateur de bureau. L’installation sur des appareils iOS/Android réels, leurs zones de sécurité matérielles et leurs politiques d’économie d’énergie restent à vérifier sur ces appareils. Le bouton d’installation utilise l’invite native lorsqu’elle est disponible et affiche sinon les instructions Safari/Android.
+
+## Refonte visuelle — 8 novembre 2026
+
+- Trois compositions : création compacte, cartes multijoueur et duel face à face.
+- Thème sombre par défaut pour une nouvelle installation ; préférences et parties déjà sauvegardées conservées.
+- Les nouvelles parties multijoueur commencent avec des cartes droites ; la rotation individuelle reste disponible. Le duel conserve son orientation opposée.
+- Paysage crépusculaire et relief des cartes en SVG originaux, icônes PWA assorties et ressources embarquées dans le cache hors ligne.
+- Vérifications : 3 à 6 joueurs à 320 × 568, quatre rotations à 6 joueurs en portrait et paysage (844 × 390), duel dans les deux orientations. Aucun bouton ni score coupé.
+- Sélecteur de couleur, retour à la création avec confirmation, historique et annulation vérifiés dans le navigateur.
+- Typage, lint, 10 tests fonctionnels, build statique et 4 tests du service worker réussis.

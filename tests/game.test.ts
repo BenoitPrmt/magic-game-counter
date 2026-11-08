@@ -14,11 +14,11 @@ const start = () =>
     { ...DEFAULT_SETUP, names: ["Benoît", "Chandra", "", "", "", ""] },
     100,
   );
-test("creates between two and six named players with opposing seats", () => {
+test("creates two to six named players with opposing seats only in duels", () => {
   for (let count = 2; count <= 6; count++) {
     const g = createGame({ ...DEFAULT_SETUP, count });
     assert.equal(g.players.length, count);
-    assert.equal(g.players[0].rotation, 180);
+    assert.equal(g.players[0].rotation, count === 2 ? 180 : 0);
     assert.equal(g.players.at(-1)?.rotation, 0);
     assert.equal(g.players.at(-1)?.name, `Joueur ${count}`);
     assert.equal(outcome(g), null);

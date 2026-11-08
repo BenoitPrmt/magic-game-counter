@@ -93,9 +93,7 @@ export function readStored(): { data: Stored; error: boolean } {
     version: 1,
     setup: DEFAULT_SETUP,
     game: null,
-    dark:
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches,
+    dark: true,
   };
   try {
     const raw = localStorage.getItem(STORAGE_KEY);

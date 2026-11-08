@@ -51,3 +51,7 @@ Le mode hors ligne est prêt lorsque « Disponible hors ligne » apparaît aprè
 L’application suit les vies et les abandons, pas les effets des cartes. Poison et dégâts de commandant ne sont pas inclus dans cette première version. Les règles d’élimination peuvent être contournées manuellement depuis le menu.
 
 Les vérifications effectuées et leurs limites sont consignées dans [docs/verification.md](docs/verification.md). La police Outfit, reprise du site de référence, est embarquée localement sous licence SIL OFL dans `public/fonts/`.
+
+## Direction visuelle
+
+L’interface utilise une ambiance crépusculaire : surfaces translucides violettes, reliefs montagneux en SVG et compteurs de vie en serif sur cartes colorées. La création, le plateau multijoueur et le duel ont chacun leur composition. Les nouveaux utilisateurs commencent en thème sombre ; les préférences existantes sont conservées. Les illustrations originales sont dans `public/art/` et restent disponibles hors ligne.
