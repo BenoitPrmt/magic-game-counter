@@ -1,49 +1,49 @@
-# Vérification de la V1
+# V1 Verification
 
-Vérifications effectuées le 7 novembre 2026.
+Checks performed on November 7, 2026.
 
-## Contrôles automatisés
+## Automated checks
 
-- `pnpm typecheck` : types stricts.
-- `pnpm lint` : règles React, Next.js et TypeScript.
-- `pnpm test` : 10 cas couvrant les vies, éliminations, pertes simultanées, annulation, exceptions, abandons, résultats manuels, revanche, rotations, historique borné et stockage invalide/refusé.
-- `pnpm build` : export statique complet, police locale et service worker généré avec empreinte de contenu.
-- `pnpm test:pwa` (après build) : 4 cas couvrant la présence des ressources précachées, le rechargement hors ligne, les mises à jour explicites, le nettoyage ciblé des anciens caches et l’absence d’interception des requêtes externes/non-GET.
+- `pnpm typecheck`: strict type checking.
+- `pnpm lint`: React, Next.js, and TypeScript rules.
+- `pnpm test`: 10 cases covering life totals, eliminations, simultaneous losses, undo, exceptions, concessions, manual results, rematches, rotations, bounded history, and invalid or unavailable storage.
+- `pnpm build`: complete static export, a locally bundled font, and a generated service worker with a content hash.
+- `pnpm test:pwa` (after building): 4 cases covering the presence of precached assets, offline reloads, explicit updates, targeted cleanup of old caches, and exclusion of external/non-GET requests from interception.
 
-## Vérifications dans le navigateur
+## Browser checks
 
-- Création avec noms, 20/40 vies et valeur personnalisée.
-- Duel : compteur supérieur inversé à 180°, nom et boutons inclus.
-- 3 à 6 joueurs à 390 × 844 : compteurs et boutons dans leurs zones, sans débordement.
-- 6 joueurs : quatre rotations individuelles à 320 × 568 et 844 × 390, sans boutons ni scores coupés.
-- Appui natif Chrome de 1,1 seconde : 20 → 14, arrêt au relâchement ; clic bref suivant : 14 → 15 ; autre joueur inchangé.
-- Sauvegarde après modification, rechargement et annulation.
-- Vies initiales à 1 : victoire détectée à 0, deuxième perte saisie sans blocage, match nul détecté, reprise et annulation.
-- Écran éveillé : statut actif dans le navigateur de test.
-- Mise à jour : masquée pendant une partie, proposée après retour à la création, activation et rechargement fonctionnels.
-- Hors ligne en production : arrêt du serveur confirmé par échec HTTP, rechargement de la partie depuis le cache, reprise du total sauvegardé et modification des vies.
-- Console de production sans erreurs lors du parcours normal.
+- Game setup with names, 20/40 starting life, and custom values.
+- Duel: the top counter is rotated by 180°, including the name and buttons.
+- 3 to 6 players at 390 × 844: counters and buttons remain within their zones, without overflow.
+- 6 players: all four individual rotations at 320 × 568 and 844 × 390, without clipped buttons or scores.
+- A native Chrome press held for 1.1 seconds: 20 → 14, stopping on release; the next short click: 14 → 15; the other player remains unchanged.
+- Saving after a change, reloading, and undoing an action.
+- Starting life set to 1: a win is detected at 0, the second loss can be entered without interruption, a draw is detected, and correction and undo remain available.
+- Screen wake lock: reported as active in the test browser.
+- Updates: hidden during a game, offered after returning to setup, with successful activation and reload.
+- Production offline mode: server shutdown confirmed by a failed HTTP request, game reloaded from the cache, saved life total restored, and life total changes still working.
+- No errors in the production console during the normal flow.
 
-## Limites de la vérification
+## Verification limitations
 
-Les tailles mobiles ont été vérifiées dans un navigateur de bureau. L’installation sur des appareils iOS/Android réels, leurs zones de sécurité matérielles et leurs politiques d’économie d’énergie restent à vérifier sur ces appareils. Le bouton d’installation utilise l’invite native lorsqu’elle est disponible et affiche sinon les instructions Safari/Android.
+Mobile viewport sizes were checked in a desktop browser. Installation on physical iOS/Android devices, hardware safe areas, and power-saving policies still need to be checked on those devices. The installation button uses the native prompt when available and otherwise displays Safari/Android instructions.
 
-## Refonte visuelle — 8 novembre 2026
+## Visual redesign — November 8, 2026
 
-- Trois compositions : création compacte, cartes multijoueur et duel face à face.
-- Thème sombre par défaut pour une nouvelle installation ; préférences et parties déjà sauvegardées conservées.
-- Les nouvelles parties multijoueur commencent avec des cartes droites ; la rotation individuelle reste disponible. Le duel conserve son orientation opposée.
-- Paysage crépusculaire et relief des cartes en SVG originaux, icônes PWA assorties et ressources embarquées dans le cache hors ligne.
-- Vérifications : 3 à 6 joueurs à 320 × 568, quatre rotations à 6 joueurs en portrait et paysage (844 × 390), duel dans les deux orientations. Aucun bouton ni score coupé.
-- Sélecteur de couleur, retour à la création avec confirmation, historique et annulation vérifiés dans le navigateur.
-- Typage, lint, 10 tests fonctionnels, build statique et 4 tests du service worker réussis.
+- Three compositions: compact game setup, multiplayer cards, and a face-to-face duel.
+- Dark mode is the default for a new installation; existing preferences and saved games are preserved.
+- New multiplayer games start with upright cards; individual rotation remains available. Duels retain their opposing orientations.
+- Original SVG twilight scenery and card terrain, matching PWA icons, and assets included in the offline cache.
+- Checks: 3 to 6 players at 320 × 568, all four rotations with 6 players in portrait and landscape (844 × 390), and duels in both orientations. No clipped buttons or scores.
+- Color picker, return to setup with confirmation, history, and undo checked in the browser.
+- Type checking, lint, 10 functional tests, the static build, and 4 service worker tests passed.
 
-## Direction mate — 8 novembre 2026
+## Matte direction — November 8, 2026
 
-- Fonds charbon/ivoire, couleurs sourdes et surfaces opaques. Illustrations, dégradés, halos, transparences décoratives, médaillon et slogans supprimés.
-- Libellés directs pour les résultats. Les erreurs de sauvegarde/cache et les mises à jour restent contextuelles ; les statuts techniques permanents sont retirés.
-- 60 contrôles de plateau dans le navigateur : 2 à 6 joueurs, clair/sombre, 320 × 568, 390 × 844 et 844 × 390, orientations normales et tournées. Scores testés jusqu’à 10000. Aucun score ni bouton coupé, aucun débordement du plateau et aucune cible de bouton inférieure à 44 px.
-- Captures de production des trois vues dans les deux thèmes ; formulaire avec libellés visibles et exemples de saisie conservés.
-- Victoire automatique, pertes simultanées, match nul, reprise et annulation vérifiés. Historique et compteurs retrouvés après rechargement.
-- Mise à jour différée appliquée depuis la création ; rechargement puis modification et annulation des vies avec le serveur arrêté. Aucune erreur dans la console de production pendant ce parcours.
-- Typage, lint, 10 tests fonctionnels, build et 4 tests PWA réussis. Moteur de partie et format de sauvegarde inchangés.
+- Charcoal/ivory backgrounds, muted colors, and opaque surfaces. Illustrations, gradients, halos, decorative transparency, the medallion, and slogans removed.
+- Direct result labels. Storage/cache errors and updates remain contextual; permanent technical status messages removed.
+- 60 browser layout checks: 2 to 6 players, light/dark themes, 320 × 568, 390 × 844, and 844 × 390, with default and rotated orientations. Scores tested up to 10000. No clipped scores or buttons, no board overflow, and no button targets smaller than 44 px.
+- Production screenshots of all three views in both themes; visible form labels and input examples preserved.
+- Automatic wins, simultaneous losses, draws, correction, and undo checked. History and counters restored after reloading.
+- Deferred update applied from setup; reload, life total changes, and undo checked with the server stopped. No errors in the production console during this flow.
+- Type checking, lint, 10 functional tests, the build, and 4 PWA tests passed. The game engine and saved-state format remain unchanged.

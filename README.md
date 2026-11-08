@@ -1,57 +1,57 @@
 # Compagnon
 
-Compteur de vies Magic en français, conçu pour un appareil au centre de la table.
+A French-language Magic life counter designed for a shared device at the center of the table.
 
-## Développement
+## Development
 
 ```sh
 pnpm install
 pnpm dev
 ```
 
-## Vérification
+## Verification
 
 ```sh
 pnpm typecheck
 pnpm lint
 pnpm test
 pnpm build
-pnpm test:pwa # vérifie le service worker généré
+pnpm test:pwa # check the generated service worker
 ```
 
-Application Next.js exportée en site statique dans `out/`. Aucun compte ni backend.
+A Next.js application exported as a static site in `out/`. No account or backend required.
 
-## Fonctionnement
+## Features
 
-- 2 à 6 joueurs, noms (24 caractères), couleurs et vies initiales personnalisables (1 à 9999).
-- À deux : écran partagé, zones opposées. En paysage, les joueurs se placent aux extrémités gauche et droite. Chaque zone peut tourner de 90° depuis le menu.
-- Appui bref : ±1. Appui de plus de 420 ms : répétition toutes les 125 ms, arrêt au relâchement, à l’annulation du geste ou à la perte de visibilité.
-- Annulation et historique des 300 dernières actions, y compris réglages, abandon et résultat.
-- Détection à 0 vie ou moins : bannière non bloquante, pour finir de saisir des pertes simultanées. Dernier joueur actif : victoire ; aucun : match nul. Le résultat peut être repris pour correction.
-- Exceptions individuelles et détection désactivable. Abandon, victoire manuelle et match nul restent disponibles.
-- Revanche avec les mêmes places et réglages ; confirmation avant de remplacer une partie en cours.
-- Thème clair/sombre, préférence et partie enregistrées localement sous `compagnon:v1`. Les données ne sont pas envoyées à un serveur.
-- Maintien de l’écran éveillé, si disponible ; nouvelle demande au retour sur l’application. Le navigateur ou l’économie d’énergie peuvent le refuser.
+- 2 to 6 players, with customizable names (24 characters), colors, and starting life totals (1 to 9999).
+- Two-player mode: a split screen with opposing orientations. In landscape mode, players sit at the left and right ends. Each player zone can be rotated by 90° from the menu.
+- Short press: ±1. Holding for more than 420 ms repeats the action every 125 ms, stopping on release, pointer cancellation, or loss of visibility.
+- Undo and a history of the last 300 actions, including settings, concessions, and results.
+- Detection at 0 life or below: a non-blocking banner allows simultaneous losses to be entered. The last active player wins; no active players means a draw. Results can be reopened for corrections.
+- Per-player exceptions and optional automatic detection. Concessions, manually declared winners, and draws remain available.
+- Rematches preserve seating and settings; replacing an ongoing game requires confirmation.
+- Light/dark theme preferences and game state are stored locally under `compagnon:v1`. Data is not sent to a server.
+- Screen wake lock, when supported, with a new request when returning to the app. The browser or power-saving settings may deny it.
 
-## Production et PWA
+## Production and PWA
 
 ```sh
 pnpm build
 pnpm start
 # http://localhost:4173
-# Autre port : pnpm start --port 4174
+# Alternative port: pnpm start --port 4174
 ```
 
-`pnpm build` exporte le site et génère `out/sw.js` à partir de tous les fichiers exportés. Le cache porte une empreinte du contenu. L’ancienne version reste cohérente pendant une partie ; la mise à jour attend et ne peut être appliquée que sur l’écran de création. Un nouvel onglet sur la même origine reprend la même sauvegarde : utiliser une seule table active par origine/appareil.
+`pnpm build` exports the site and generates `out/sw.js` from all exported files. The cache is identified by a content hash. The previous version remains consistent during a game; updates wait and can only be applied from the game setup screen. A new tab on the same origin loads the same saved state: use only one active table per origin/device.
 
-Déployer **le contenu de `out/` à la racine d’un hébergement HTTPS**. Les service workers et l’installation nécessitent HTTPS (ou localhost pour les essais). Servir `sw.js` et les documents HTML avec `Cache-Control: no-cache`, les chunks `/_next/static/` avec un cache immuable. Le serveur de prévisualisation inclus applique ces en-têtes. Ne pas utiliser `next start` avec cet export statique.
+Deploy **the contents of `out/` at the root of an HTTPS host**. Service workers and installation require HTTPS (or localhost for testing). Serve `sw.js` and HTML documents with `Cache-Control: no-cache`, and `/_next/static/` chunks with immutable caching. The included preview server applies these headers. Do not use `next start` with this static export.
 
-Le mode hors ligne est disponible après un premier chargement complet. Aucun statut technique permanent n’est affiché ; seules les erreurs de cache et les mises à jour disponibles sont signalées. Le service worker n’est pas activé en développement (`pnpm dev`). L’installation utilise l’invite native quand elle existe ; les autres navigateurs affichent les instructions, notamment Safari iOS.
+Offline mode becomes available after the first complete load. No permanent technical status is displayed; only cache errors and available updates are reported. The service worker is disabled during development (`pnpm dev`). Installation uses the native prompt when available; other browsers display instructions, including Safari on iOS.
 
-L’application suit les vies et les abandons, pas les effets des cartes. Poison et dégâts de commandant ne sont pas inclus dans cette première version. Les règles d’élimination peuvent être contournées manuellement depuis le menu.
+The app tracks life totals and concessions, not card effects. Poison counters and commander damage are not included in this first version. Elimination rules can be overridden manually from the menu.
 
-Les vérifications effectuées et leurs limites sont consignées dans [docs/verification.md](docs/verification.md). La police Outfit, reprise du site de référence, est embarquée localement sous licence SIL OFL dans `public/fonts/`.
+Completed checks and their limitations are recorded in [docs/verification.md](docs/verification.md). The Outfit font, reused from the reference site, is bundled locally under the SIL OFL license in `public/fonts/`.
 
-## Direction visuelle
+## Visual direction
 
-L’interface évoque un accessoire de table mat : fond charbon ou papier clair, surfaces opaques, chiffres Georgia de graisse normale et couleurs brique, ardoise, olive, ocre et prune. Les boutons et champs ont des cibles tactiles d’au moins 44 px. Les vues de création, de jeu multijoueur et de duel conservent leurs compositions, sans illustration, dégradé, transparence décorative ou slogan. Outfit est utilisé pour l’interface. Le sombre reste le thème par défaut, sans modifier les préférences enregistrées.
+The interface evokes a matte tabletop accessory: charcoal or light paper backgrounds, opaque surfaces, regular-weight Georgia numerals, and brick, slate, olive, ochre, and plum colors. Buttons and fields have touch targets of at least 44 px. Game setup, multiplayer, and duel views retain their distinct compositions, without illustrations, gradients, decorative transparency, or slogans. Outfit is used for the interface. Dark mode remains the default without changing saved preferences.
