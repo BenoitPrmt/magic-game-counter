@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import {
-  Flame,
   MoreVertical,
   Minus,
   Plus,
@@ -12,7 +11,6 @@ import {
   Flag,
   ArrowLeft,
   ShieldCheck,
-  Trophy,
   RotateCcw,
 } from "lucide-react";
 import { type Game, type Action, eliminated, outcome } from "@/lib/game";
@@ -63,8 +61,11 @@ export function GameBoard({
           <ArrowLeft size={22} />
         </button>
         <div>
-          <h1>Partie en cours</h1>
-          <p>{game.players.length} joueurs · Magic</p>
+          <h1>Partie</h1>
+          <p>
+            {game.players.length} joueurs · {game.initialLife} vie
+            {game.initialLife > 1 ? "s" : ""}
+          </p>
         </div>
         <nav className="game-toolbar" aria-label="Actions de la partie">
           <button
@@ -98,11 +99,6 @@ export function GameBoard({
             dispatch={dispatch}
           />
         ))}
-        {game.players.length === 2 && (
-          <span className="duel-seal" aria-hidden="true">
-            <Flame size={24} />
-          </span>
-        )}
       </div>
       <footer className="game-footer">
         <button onClick={() => setPanel("history")}>
@@ -111,11 +107,10 @@ export function GameBoard({
       </footer>
       {detected && !game.result && (
         <div className="outcome-banner" role="status">
-          <Trophy size={17} />
           <span>
             {result.winner === null
-              ? "Match nul possible"
-              : `${game.players.find((p) => p.id === result.winner)?.name} remporte la partie`}
+              ? "Match nul"
+              : `Victoire de ${game.players.find((p) => p.id === result.winner)?.name}`}
           </span>
           <button onClick={() => setShowResult(true)}>Voir</button>
           <button
@@ -133,15 +128,11 @@ export function GameBoard({
           labelledBy="result-title"
           onClose={closeResult}
         >
-          <span className="result-icon">
-            <Trophy size={32} />
-          </span>
           <h2 id="result-title">
             {result?.winner === null
-              ? "Égalité à la table."
-              : `${game.players.find((p) => p.id === result?.winner)?.name} l’emporte !`}
+              ? "Match nul"
+              : `Victoire de ${game.players.find((p) => p.id === result?.winner)?.name}`}
           </h2>
-          <p>Une belle partie. On remet ça ?</p>
           <button
             className="primary"
             onClick={() => {
@@ -183,10 +174,7 @@ export function GameBoard({
           </div>
           {panel === "leave" ? (
             <>
-              <p className="install-copy">
-                La partie en cours sera remplacée. Vous pourrez préparer une
-                nouvelle table avec les mêmes noms.
-              </p>
+              <p className="install-copy">La partie en cours sera remplacée.</p>
               <div className="menu-bottom">
                 <button className="secondary" onClick={() => setPanel(null)}>
                   Continuer à jouer
@@ -213,17 +201,14 @@ export function GameBoard({
                     </time>
                   </li>
                 ))}
-                {!game.history.length && (
-                  <li>Les premières actions apparaîtront ici.</li>
-                )}
+                {!game.history.length && <li>Aucune action.</li>}
               </ol>
-              <p className="hint">Les 300 dernières actions sont conservées.</p>
             </>
           ) : (
             <>
               <p className="menu-description">
-                {game.players.length} joueurs · {game.initialLife} vies au
-                départ
+                {game.players.length} joueurs · {game.initialLife} vie
+                {game.initialLife > 1 ? "s" : ""} au départ
               </p>
               <button className="menu-row" onClick={() => setPanel("history")}>
                 <History size={18} /> Historique{" "}
@@ -263,10 +248,7 @@ export function GameBoard({
                 />
               </label>
               <label className="toggle-row">
-                <span>
-                  Thème sombre
-                  <small>Une ambiance plus douce autour de la table.</small>
-                </span>
+                <span>Thème sombre</span>
                 <input
                   type="checkbox"
                   checked={dark}
@@ -335,8 +317,7 @@ export function GameBoard({
                 </select>
               </label>
               <p className="hint">
-                Les effets des cartes peuvent modifier les conditions de
-                défaite. Vous gardez la main sur le résultat.
+                Les effets des cartes ne sont pas pris en compte.
               </p>
               {confirm ? (
                 <div className="confirm-box">
@@ -464,7 +445,7 @@ function PlayerZone({
               aria-hidden="true"
             >
               {change > 0 ? "+" : ""}
-              {change || "Vies"}
+              {change || ""}
             </span>
           </div>
           <HoldButton
@@ -475,11 +456,9 @@ function PlayerZone({
             <Plus />
           </HoldButton>
         </div>
-        <span className="zone-bottom">
-          {player.protected
-            ? "Protégé contre la défaite liée aux vies"
-            : "Points de vie"}
-        </span>
+        {player.protected && (
+          <span className="zone-bottom">Reste en jeu à 0 vie</span>
+        )}
       </div>
     </section>
   );

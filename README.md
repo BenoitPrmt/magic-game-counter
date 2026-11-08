@@ -46,7 +46,7 @@ pnpm start
 
 Déployer **le contenu de `out/` à la racine d’un hébergement HTTPS**. Les service workers et l’installation nécessitent HTTPS (ou localhost pour les essais). Servir `sw.js` et les documents HTML avec `Cache-Control: no-cache`, les chunks `/_next/static/` avec un cache immuable. Le serveur de prévisualisation inclus applique ces en-têtes. Ne pas utiliser `next start` avec cet export statique.
 
-Le mode hors ligne est prêt lorsque « Disponible hors ligne » apparaît après le premier chargement complet. Le service worker n’est pas activé en développement (`pnpm dev`). L’installation utilise l’invite native quand elle existe ; les autres navigateurs affichent les instructions, notamment Safari iOS.
+Le mode hors ligne est disponible après un premier chargement complet. Aucun statut technique permanent n’est affiché ; seules les erreurs de cache et les mises à jour disponibles sont signalées. Le service worker n’est pas activé en développement (`pnpm dev`). L’installation utilise l’invite native quand elle existe ; les autres navigateurs affichent les instructions, notamment Safari iOS.
 
 L’application suit les vies et les abandons, pas les effets des cartes. Poison et dégâts de commandant ne sont pas inclus dans cette première version. Les règles d’élimination peuvent être contournées manuellement depuis le menu.
 
@@ -54,4 +54,4 @@ Les vérifications effectuées et leurs limites sont consignées dans [docs/veri
 
 ## Direction visuelle
 
-L’interface utilise une ambiance crépusculaire : surfaces translucides violettes, reliefs montagneux en SVG et compteurs de vie en serif sur cartes colorées. La création, le plateau multijoueur et le duel ont chacun leur composition. Les nouveaux utilisateurs commencent en thème sombre ; les préférences existantes sont conservées. Les illustrations originales sont dans `public/art/` et restent disponibles hors ligne.
+L’interface évoque un accessoire de table mat : fond charbon ou papier clair, surfaces opaques, chiffres Georgia de graisse normale et couleurs brique, ardoise, olive, ocre et prune. Les boutons et champs ont des cibles tactiles d’au moins 44 px. Les vues de création, de jeu multijoueur et de duel conservent leurs compositions, sans illustration, dégradé, transparence décorative ou slogan. Outfit est utilisé pour l’interface. Le sombre reste le thème par défaut, sans modifier les préférences enregistrées.

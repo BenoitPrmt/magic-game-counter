@@ -10,7 +10,7 @@ const outfit = localFont({
 export const metadata: Metadata = {
   title: "Compagnon — Compteur de vies Magic",
   description:
-    "Vos vies, votre partie. Un compteur Magic simple, face à face et hors ligne.",
+    "Compteur de points de vie pour Magic, de 2 à 6 joueurs, utilisable hors ligne.",
   manifest: "/manifest.webmanifest",
   applicationName: "Compagnon",
   appleWebApp: {
@@ -24,7 +24,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#100e1a",
+  themeColor: "#191918",
 };
 export default function RootLayout({
   children,

@@ -11,18 +11,8 @@ import {
   COLORS as colors,
   type Game,
 } from "@/lib/game";
-import {
-  Flame,
-  Moon,
-  Sun,
-  Play,
-  X,
-  Minus,
-  Plus,
-  Users,
-  Check,
-} from "lucide-react";
-export const colorNames = ["Bleu", "Rouge", "Vert", "Ivoire", "Charbon"];
+import { Moon, Sun, Play, X, Minus, Plus, Check } from "lucide-react";
+export const colorNames = ["Ardoise", "Brique", "Olive", "Ocre", "Prune"];
 const subscribe = () => () => {};
 export function CounterApp() {
   const ready = useSyncExternalStore(
@@ -34,7 +24,7 @@ export function CounterApp() {
     <ReadyApp />
   ) : (
     <main className="app loading" aria-label="Chargement de votre table">
-      <Flame size={32} />
+      <span>Chargement…</span>
     </main>
   );
 }
@@ -65,7 +55,7 @@ function ReadyApp() {
     document.documentElement.style.colorScheme = dark ? "dark" : "light";
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", dark ? "#100e1a" : "#f3f0f8");
+      ?.setAttribute("content", dark ? "#191918" : "#F2EFE7");
   }, [count, names, playerColors, life, custom, game, dark]);
   const notice = storageError ? (
     <div className="storage-notice" role="alert">
@@ -101,12 +91,8 @@ function ReadyApp() {
           {notice}
           <header className="site-header">
             <Link className="brand" href="/" aria-label="Compagnon, accueil">
-              <span className="brand-icon">
-                <Flame size={22} />
-              </span>
               <span className="brand-copy">
                 <strong>Compteur de vies</strong>
-                <span>Compagnon pour Magic</span>
               </span>
             </Link>
             <button
@@ -137,15 +123,11 @@ function ReadyApp() {
               }}
             >
               <div className="setup-card-heading">
-                <Users size={22} />
                 <h1>Nouvelle partie</h1>
               </div>
               <div className="form-section">
                 <div className="section-line">
                   <h2>Nombre de joueurs</h2>
-                  <span className="muted">
-                    <Users size={15} /> {count} joueurs
-                  </span>
                 </div>
                 <div className="segmented player-count">
                   {[2, 3, 4, 5, 6].map((n) => (
@@ -216,7 +198,6 @@ function ReadyApp() {
               <div className="form-section life-section">
                 <div className="section-line">
                   <h2>Points de vie de départ</h2>
-                  <span className="tiny">À chacun son format</span>
                 </div>
                 <div className="life-options">
                   {[20, 40].map((n) => (
@@ -265,17 +246,8 @@ function ReadyApp() {
               <button className="primary start-button" type="submit">
                 <Play size={18} fill="currentColor" /> Démarrer la partie
               </button>
-              <p className="form-note">Un seul écran. Toute la table.</p>
             </form>
-            <p className="setup-footer">
-              <span className="status-dot" />
-              Sans compte · Sauvegarde sur cet appareil
-            </p>
           </section>
-          <footer className="site-footer">
-            <span>Un outil de Benoît Parmentier</span>
-            <span>Pour le plaisir de jouer.</span>
-          </footer>
         </>
       )}
     </main>

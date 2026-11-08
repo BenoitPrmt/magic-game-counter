@@ -2,14 +2,14 @@
   "id": "/",
   "name": "Compagnon — Compteur de vies Magic",
   "short_name": "Compagnon",
-  "description": "Un seul écran pour compter les vies de toute la table, même hors ligne.",
+  "description": "Compteur de points de vie pour Magic, de 2 à 6 joueurs.",
   "lang": "fr",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#100e1a",
-  "theme_color": "#100e1a",
+  "background_color": "#191918",
+  "theme_color": "#191918",
   "icons": [
     {
       "src": "/icon-192.png",

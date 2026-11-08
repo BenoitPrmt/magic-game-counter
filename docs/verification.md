@@ -37,3 +37,13 @@ Les tailles mobiles ont été vérifiées dans un navigateur de bureau. L’inst
 - Vérifications : 3 à 6 joueurs à 320 × 568, quatre rotations à 6 joueurs en portrait et paysage (844 × 390), duel dans les deux orientations. Aucun bouton ni score coupé.
 - Sélecteur de couleur, retour à la création avec confirmation, historique et annulation vérifiés dans le navigateur.
 - Typage, lint, 10 tests fonctionnels, build statique et 4 tests du service worker réussis.
+
+## Direction mate — 8 novembre 2026
+
+- Fonds charbon/ivoire, couleurs sourdes et surfaces opaques. Illustrations, dégradés, halos, transparences décoratives, médaillon et slogans supprimés.
+- Libellés directs pour les résultats. Les erreurs de sauvegarde/cache et les mises à jour restent contextuelles ; les statuts techniques permanents sont retirés.
+- 60 contrôles de plateau dans le navigateur : 2 à 6 joueurs, clair/sombre, 320 × 568, 390 × 844 et 844 × 390, orientations normales et tournées. Scores testés jusqu’à 10000. Aucun score ni bouton coupé, aucun débordement du plateau et aucune cible de bouton inférieure à 44 px.
+- Captures de production des trois vues dans les deux thèmes ; formulaire avec libellés visibles et exemples de saisie conservés.
+- Victoire automatique, pertes simultanées, match nul, reprise et annulation vérifiés. Historique et compteurs retrouvés après rechargement.
+- Mise à jour différée appliquée depuis la création ; rechargement puis modification et annulation des vies avec le serveur arrêté. Aucune erreur dans la console de production pendant ce parcours.
+- Typage, lint, 10 tests fonctionnels, build et 4 tests PWA réussis. Moteur de partie et format de sauvegarde inchangés.
