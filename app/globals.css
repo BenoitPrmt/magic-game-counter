@@ -276,39 +276,39 @@ h2 {
   border-radius: 4px;
 }
 .blue {
-  --player-accent: #7794a8;
-  --player-surface: #e1e6e8;
+  --player-accent: #66add2;
+  --player-surface: #c4dfed;
 }
 .red {
-  --player-accent: #b46c60;
-  --player-surface: #ebddd7;
+  --player-accent: #df7b66;
+  --player-surface: #f0c5bd;
 }
 .green {
-  --player-accent: #8c9d75;
-  --player-surface: #e0e4d8;
+  --player-accent: #a5c46f;
+  --player-surface: #d0e3ba;
 }
 .ivory {
-  --player-accent: #c4a66c;
-  --player-surface: #ebe2ce;
+  --player-accent: #edc36a;
+  --player-surface: #f2dda8;
 }
 .black {
-  --player-accent: #9e91ae;
-  --player-surface: #e5dfe8;
+  --player-accent: #b899d6;
+  --player-surface: #dfcbed;
 }
 .dark .blue {
-  --player-surface: #283a44;
+  --player-surface: #204d68;
 }
 .dark .red {
-  --player-surface: #45302b;
+  --player-surface: #713a39;
 }
 .dark .green {
-  --player-surface: #333d2e;
+  --player-surface: #3e5838;
 }
 .dark .ivory {
-  --player-surface: #443c2c;
+  --player-surface: #68502b;
 }
 .dark .black {
-  --player-surface: #38313d;
+  --player-surface: #534061;
 }
 .color-picker {
   position: absolute;
@@ -532,7 +532,6 @@ h2 {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border);
-  border-left: 4px solid var(--player-accent);
   border-radius: 12px;
   background: var(--player-surface);
   color: var(--score-text);
